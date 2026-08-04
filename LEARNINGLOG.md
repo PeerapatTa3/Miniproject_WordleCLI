@@ -108,3 +108,16 @@
 - ความถูกต้องและความเข้มงวดทางเทคนิค: 4/4 — การเลือกใช้โครงสร้างข้อมูลตรงตามความต้องการของสถานะ; ไม่มีข้อผิดพลาดที่ไม่ได้รับการจัดการ
 - การใช้งานสถาปัตยกรรม: 4/4 — การนำทางเมนูสะอาด ออกจากโปรแกรมได้ราบรื่น ปรับมาตรฐานข้อมูลเข้าเรียบร้อย
 - ความเป็นเจ้าของกระบวนการแบบสะท้อนคิด: 4/4 — มีประวัติการทำงานสมบูรณ์ทั้งในบันทึกนี้, `CHANGELOG.md` และกระดาน Kanban
+
+
+## บันทึกรอบที่ 9: การรีแฟกเตอร์สถาปัตยกรรมโค้ดและระบบสถิติ
+**เป้าหมายผลการเรียนรู้:** LO1 (Dictionary Data Structure), LO5 (Documentation & Refactoring)
+**คำสั่ง AI ที่ใช้:** "refactor code into modular functions, change guess_history to store dictionaries for statistics, add player stats and how to play menus, remove word removal feature."
+
+**การตัดสินใจทางเทคนิคและการสะท้อนคิด:**
+- **Modularization:** โค้ดเดิมยาวและอ่านยาก จึงตัดสินใจแยกตรรกะออกเป็นฟังก์ชันย่อย เช่น `validate_input` และ `evaluate_guess` ทำให้โค้ดสะอาดขึ้น ทดสอบง่ายขึ้น และมี Docstrings อธิบายชัดเจน (LO5)
+- **Dictionaries:** การใช้ List ของ String แบบเดิมไม่สามารถตอบโจทย์การทำสถิติได้ จึงเปลี่ยน `guess_history` ให้เก็บ Dictionary แทน (`{"secret_word": ..., "won": ..., "guesses": ...}`) ซึ่งแสดงให้เห็นถึงความเข้าใจในการใช้ Data Structures ที่ซับซ้อนขึ้น (LO1)
+- **List Comprehensions:** ในส่วนของ `display_statistics` นำ List Comprehension และ `sum()` มาใช้ประมวลผลข้อมูลสถิติ ซึ่งมีประสิทธิภาพมากกว่าลูปแบบดั้งเดิม (LO2)
+
+**การแก้บั๊กและอุปสรรค:** 
+- ในตอนแรกพบความเสี่ยงที่จะเกิด `ZeroDivisionError` หากผู้เล่นกดดูสถิติ (เมนู 3) ก่อนเล่นเกม จึงได้นำเทคนิค Defensive Programming (LO4) มาใช้ตรวจสอบ `if not guess_history:` เพื่อดักทางไว้ก่อน
