@@ -50,11 +50,11 @@
 | # | Feature | Input / Steps | Expected Result | Actual (ก่อนแก้) | Actual (หลังแก้) | Status |
 |---|---------|----------------|------------------|-------------------|-------------------|--------|
 | TC-01 | เมนูหลัก | เลือก option 1-4 | แสดงเมนูถูกต้อง, เข้าฟังก์ชันตรงตามเลือก | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
-| TC-02 | เมนูหลัก - invalid | พิมพ์ `9`, `abc` | แจ้ง "Invalid menu choice" ไม่ crash | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
+| TC-02 | เมนูหลัก - invalid | พิมพ์ `9`, `abc`,ไม่พิมพ์แล้วกด Enter | แจ้ง "Invalid menu choice" ไม่ crash | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-03 | Play - ชนะเกม | เดาคำถูกภายใน 6 ครั้ง | แสดง feedback ทุกครั้ง, ขึ้นข้อความ 🎉 ชนะ | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-04 | Play - แพ้เกม | เดาผิดครบ 6 ครั้ง | แสดง "Out of attempts" พร้อมเฉลยคำลับ | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-05 | Play - input ผิดความยาว | พิมพ์ `AB` หรือ `TOOLONGWORD` | แจ้ง invalid, ไม่นับเป็น attempt | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
-| TC-06 | Play - input ไม่ใช่ตัวอักษร | พิมพ์ `12345`, `AB!DE` | แจ้ง invalid, ไม่นับเป็น attempt | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
+| TC-06 | Play - input ไม่ใช่ตัวอักษรหรือไม่พิมพ์แล้ว Enter | พิมพ์ `12345`, `AB!DE`,ปล่อยว่างแล้ว Enter | แจ้ง invalid, ไม่นับเป็น attempt | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-07 | Play - ตัวอักษรซ้ำในคำเดา | secret=`APPLE`, guess=`PAPAS` | feedback ต้องนับ P ตามจำนวนจริงในคำลับ (2 ตัว) | ❌ **Fail** (mark "-" เกิน) | ✅ Pass | ✅ Fixed |
 | TC-08 | Play - เดาคำถูกทันที | guess = secret_word เลย | ชนะทันที, attempts = 1 | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-09 | View History - ว่าง | เลือก option 2 ก่อนเล่นเกม | แจ้ง "No guesses recorded yet" | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
@@ -64,15 +64,14 @@
 | TC-13 | Remove Word - ลบจนหมด pool | ลบทีละคำจนกว่า pool ว่าง | แจ้ง auto-reset, pool กลับเป็น default 7 คำ | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-14 | Play - pool ว่างตอนเริ่มเกมใหม่ | ลบคำจนหมด แล้วเลือก option 1 | auto-reset pool ก่อนเริ่มเกม ไม่ crash | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
 | TC-15 | Exit | เลือก option 4 | แสดงข้อความลาก่อน, โปรแกรมจบ loop | ตรงตามคาด | ตรงตามคาด | ✅ Pass |
-| TC-16 | Robustness - EOF / empty input | กด Enter เปล่า, หรือ pipe ปิด stdin | ⚠️ ยังไม่ได้ handle → อาจ crash ด้วย `EOFError` | - | - | 🔶 Known limitation (ดูด้านล่าง) |
+
 
 ---
 
 ## ⚠️ Known Limitations (ไม่ใช่บั๊ก แต่ควร note ไว้)
 
 1. **ไม่ตรวจสอบว่าคำเดาอยู่ในพจนานุกรม/word_pool**  ผู้เล่นเดาคำที่ไม่มีความหมาย (เช่น `AAAAA`) ก็ผ่าน validation ได้ เพราะระบบเช็คแค่ความยาว + isalpha
-2. **ไม่ handle `EOFError`**  ถ้า stdin ปิดกะทันหัน เช่นรันผ่าน automated pipe โปรแกรมจะ crash แทนที่จะ exit อย่างสุภาพ
-3. **`guess_history` สะสมข้ามเกม ไม่ reset ต่อรอบ**  
+2. **`guess_history` สะสมข้ามเกม ไม่ reset ต่อรอบ**  
 
 ---
 
