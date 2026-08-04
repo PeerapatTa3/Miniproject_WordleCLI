@@ -81,6 +81,21 @@ def run_wordle_cli():
                 guess_history.append(user_input)
                 attempts += 1
 
+                feedback = ["x"] * word_length
+                secret_remaining = list(secret_word)
+
+                # Pass 1: หา ✓ (ตำแหน่งถูก) ก่อน แล้ว "เอาตัวอักษรนั้นออก" จาก secret_remaining
+                for i in range(word_length):
+                    if user_input[i] == secret_word[i]:
+                        feedback[i] = "✓"
+                        secret_remaining[i] = None
+
+                # Pass 2: หา "-" (มีอยู่แต่ผิดตำแหน่ง) จากตัวอักษรที่ "เหลือ" เท่านั้น
+                for i in range(word_length):
+                    if feedback[i] == "x" and user_input[i] in secret_remaining:
+                        feedback[i] = "-"
+                        secret_remaining[secret_remaining.index(user_input[i])] = None
+                '''
                 # Feedback calculation: ✓ = Correct position, - = Wrong position, x = Absent
                 feedback = []
                 for i in range(word_length):
@@ -90,6 +105,7 @@ def run_wordle_cli():
                         feedback.append("-")
                     else:
                         feedback.append("x")
+                '''
 
                 print("Feedback: " + " ".join(feedback))
 
