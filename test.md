@@ -24,6 +24,8 @@
   ```
   - **โค้ดใหม่:**
   ```python
+  feedback = ["x"] * word_length
+  secret_remaining = list(secret_word)
                 for i in range(word_length):
                     if user_input[i] == secret_word[i]:
                         feedback[i] = "✓"
