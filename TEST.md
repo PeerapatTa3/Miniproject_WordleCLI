@@ -1,7 +1,4 @@
 # TEST.md — Miniproject_WordleCLI
-
-ผู้ทดสอบ (Debugger): นายพีรพล แก้วเจริญสันติสุข\
-วันที่ทดสอบ: 4/8/2026\
 ไฟล์ที่ทดสอบ: `game.py`\
 วิธีทดสอบ: Manual testing รันโปรแกรมจริงผ่าน terminal, ป้อน input ตามเคสด้านล่าง
 
