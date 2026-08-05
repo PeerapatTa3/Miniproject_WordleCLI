@@ -4,7 +4,9 @@ A terminal-based word guessing game built with Python fundamentals.
 Demonstrates: LO1 (Data Structures), LO2 (Collections), LO3 (Control Flow),
 LO4 (Defensive Programming), and LO5 (Process Ownership).
 """
-
+import nltk
+nltk.download('words')
+from nltk.corpus import words
 import random
 
 # =====================================================================
@@ -14,6 +16,8 @@ import random
 GAME_CONFIG = (5, 6)  # (WORD_LENGTH, MAX_ATTEMPTS)
 DEFAULT_WORDS = ("APPLE", "CRANE", "TRAIN", "PLANT", "SMART", "FLASH", "BRAIN")
 
+WORD_LIST = words.words()
+FIVE_LETTER_WORDS = [w for w in WORD_LIST if len(w) == 5 and w.isalpha() and w.islower()]
 
 # =====================================================================
 # LO4: DEFENSIVE PROGRAMMING & LO5: LOGGING / DOCUMENTATION
@@ -26,6 +30,8 @@ def validate_input(user_input, word_length):
     [LO4] Defensive Programming: ตรวจสอบความยาวและประเภทตัวอักษร (.isalpha())
           เพื่อป้องกัน Runtime Crash ก่อนนำไปคำนวณต่อ
     """
+    if not user_input in FIVE_LETTER_WORDS:
+        return False, "❌ Invalid entry! Please enter a valid 5-letter word."
     # LO2: ใช้ len() ตรวจสอบความยาวข้อมูล
     if len(user_input) != word_length or not user_input.isalpha():
         return False, f"❌ Invalid entry! Please enter exactly {word_length} letters."
@@ -64,13 +70,13 @@ def format_feedback(feedback):
     return " ".join(feedback)
 
 
-def play_single_game(word_pool, game_config):
+def play_single_game(FIVE_LETTER_WORDS, game_config):
     """
     [LO3] Interactive Control Flow: คุม Loop การเล่นในแต่ละรอบเกม
     [LO5] Data Logging: คืนค่า Dictionary รวมประวัติผลลัพธ์ของเกมนั้นๆ
     """
     word_length, max_attempts = game_config
-    secret_word = random.choice(word_pool)
+    secret_word = random.choice(FIVE_LETTER_WORDS).upper()
     attempts = 0
     game_won = False
     
@@ -193,7 +199,7 @@ def run_wordle_cli():
 
         # LO3: โครงสร้างทางเลือก if/elif/else สำหรับเมนูตอบโต้
         if choice == "1":
-            game_result = play_single_game(DEFAULT_WORDS, GAME_CONFIG)
+            game_result = play_single_game(FIVE_LETTER_WORDS, GAME_CONFIG)
             
             # LO2: ปรับแต่งและบันทึกประวัติด้วย .append() และ len()
             game_result["game_number"] = len(guess_history) + 1
