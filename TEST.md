@@ -128,3 +128,27 @@ def validate_input(user_input: str, word_length: int) -> tuple[bool, str | None]
 - Test cases ทั้งหมด: 12 เคส (ปรับปรุงโครงสร้างตามเมนูใหม่ 5 เมนู)
 - ตัด Test cases เกี่ยวกับการลบคำออก (Feature ถูกนำออกใน v2.0.0)
 - บั๊กที่พบ: 0 รายการ (โค้ดรัดกุมขึ้นจากการแยกย่อยฟังก์ชัน)
+
+## ✅ Test Cases (อัปเดตสำหรับ v2.1.0)
+
+| # | Feature | Input / Steps | Expected Result | Status |
+|---|---------|----------------|------------------|--------|
+| TC-01 | เมนูหลัก | เลือก option 1-5 | แสดงเมนูถูกต้อง, เข้าฟังก์ชันตรงตามที่เลือก | ✅ Pass |
+| TC-02 | เมนูหลัก - invalid | พิมพ์ `9`, `abc`, ไม่พิมพ์แล้วกด Enter | แจ้ง "Invalid menu choice" ดักจับได้สมบูรณ์ ไม่ crash | ✅ Pass |
+| TC-03 | Play - ชนะเกม | เดาคำถูกภายใน 6 ครั้ง | แสดง feedback ทุกครั้ง, ขึ้นข้อความ 🎉 ชนะ | ✅ Pass |
+| TC-04 | Play - แพ้เกม | เดาผิดครบ 6 ครั้ง | แสดง "Out of attempts" พร้อมเฉลยคำลับ | ✅ Pass |
+| TC-05 | Play - input ผิดความยาว | พิมพ์ `AB` หรือ `TOOLONGWORD` | แจ้ง invalid จากฟังก์ชัน `validate_input` ไม่นับเป็น attempt | ✅ Pass |
+| TC-06 | Play - ไม่ใช่ตัวอักษร | พิมพ์ `12345` หรือ `AB!DE` | แจ้ง invalid จากฟังก์ชัน `validate_input` ไม่นับเป็น attempt | ✅ Pass |
+| TC-07 | Play - คำไม่ตรงไม่มีความหมาย ไม่ใช่ภาษาอังกฤษ | พิมพ์ ฟกหฟห,fffff,aaaaa| แสดง "Invalid entry! Word is not in the word list." ไม่ crash | ✅ Pass |
+| TC-08 | History - ข้อมูลว่าง | กดเมนู 2 ก่อนเล่น | แสดง "No guesses recorded yet." ไม่ crash | ✅ Pass |
+| TC-09 | History - มีข้อมูล | เล่นจบ 1 เกมแล้วกดเมนู 2 | แสดงรายการคำเดาแยกตามรายเกม (Game 1, Game 2) ถูกต้อง | ✅ Pass |
+| TC-10 | Stats - ข้อมูลว่าง | กดเมนู 3 ก่อนเล่น | แสดง "No stats available yet." หลีกเลี่ยง ZeroDivisionError | ✅ Pass |
+| TC-11 | Stats - การคำนวณ | ชนะ 1 แพ้ 1 แล้วกดเมนู 3 | แสดง Win Rate, Streak คำนวณถูกต้อง, กราฟ █ แท่งถูกต้อง | ✅ Pass |
+| TC-12 | How to Play | กดเมนู 4 | แสดงคู่มือการเล่นและคำอธิบายสัญลักษณ์ | ✅ Pass |
+| TC-13 | Exit | เลือก option 5 | แสดงข้อความลาก่อน, โปรแกรมจบ loop | ✅ Pass |
+
+---
+
+## สรุป
+- Test cases ทั้งหมด: 13 เคส 
+- เพิ่ม test คำที่ไม่มีความหมาย ไม่ใช่ภาษาอังกฤษ
