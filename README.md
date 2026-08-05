@@ -3,6 +3,7 @@
 โปรแกรมเกม Wordle บนเทอร์มินัล สร้างขึ้นเป็นมินิโปรเจกต์พื้นฐาน Python โดยใช้กระบวนการทำงานที่ขับเคลื่อนด้วย Kanban (WIP=1) ร่วมกับ AI
 
 **คลังโค้ด:** [PeerapatTa3/Miniproject_WordleCLI](https://github.com/PeerapatTa3/Miniproject_WordleCLI)
+**สไลด์นำเสนอ:** [Wordle CLI Slide](https://canva.link/8ar6q5q3ydr86pz)
 
 ---
 
