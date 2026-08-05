@@ -2,7 +2,7 @@
 
 การเปลี่ยนแปลงที่สำคัญทั้งหมดของโครงการ Wordle CLI ถูกบันทึกไว้ในไฟล์นี้ โดยปฏิบัติตามรอบการพัฒนา Kanban WIP=1 ของโครงการ
 
-## [v2.1.0] - 2026-08-05 — Online Dictionary Validation
+## [v2.1.1] - 2026-08-05 — Online Dictionary Validation
 ### สิ่งที่เพิ่มเข้ามา
 - **Remote Word List Integration:** โหลดคำศัพท์ 5 ตัวอักษรจากไฟล์ออนไลน์ `words_alpha.txt` โดยใช้ `urllib.request`.
 - **Immutable Word Pool:** สร้าง `FIVE_LETTER_WORDS` เป็น Tuple เพื่อเก็บคำที่ผ่านการกรองแบบไม่เปลี่ยนแปลง.
