@@ -21,17 +21,23 @@
   ```
   - **โค้ดใหม่:**
   ```python
-  feedback = ["x"] * word_length
-  secret_remaining = list(secret_word)
-                for i in range(word_length):
-                    if user_input[i] == secret_word[i]:
-                        feedback[i] = "✓"
-                        secret_remaining[i] = None
+    word_length = len(secret)
+    feedback = ["x"] * word_length
+    secret_pool = list(secret)
 
-                for i in range(word_length):
-                    if feedback[i] == "x" and user_input[i] in secret_remaining:
-                        feedback[i] = "-"
-                        secret_remaining[secret_remaining.index(user_input[i])] = None
+    # Pass 1: Exact matches
+    for i in range(word_length):
+        if guess[i] == secret[i]:
+            feedback[i] = "✓"
+            secret_pool[i] = None  # ทำเครื่องหมายว่าถูกใช้ไปแล้ว
+
+    # Pass 2: Wrong-position matches
+    for i in range(word_length):
+        if feedback[i] == "✓":
+            continue
+        if guess[i] in secret_pool:
+            feedback[i] = "-"
+            secret_pool[secret_pool.index(guess[i])] = None
   ```
 - **ปัญหา:** ใช้ `in` ตรวจสอบว่ามีตัวอักษรอยู่ในคำลับหรือไม่ โดยไม่นับจำนวนตัวอักษรที่เหลือจริง ทำให้ตัวอักษรซ้ำถูก mark "-" เกินจำนวนจริงในคำลับ
 - **Repro:** secret = `APPLE` (มี P 2 ตัว), guess = `PAPAS`
@@ -41,7 +47,27 @@
 - **สถานะ:** ✅ แก้ไขแล้ว — เปลี่ยนเป็น two-pass algorithm claim ✓ ก่อน แล้วค่อยเช็ค "-" จากตัวอักษรที่เหลือ
 
 ---
+## + ส่วนที่เพิ่ม
+ฟังก์ชันสำหรับคัดกรองคำตอบของผู้เล่น ป้องกันข้อผิดพลาดแบบ Defensive Programming และตรวจสอบความถูกต้องของข้อมูลก่อนนำไปคำนวณต่อ
 
+### 📝 โค้ดฟังก์ชัน
+```python
+def validate_input(user_input: str, word_length: int) -> tuple[bool, str | None]:
+    """
+    [LO5] Documentation: อธิบายหน้าที่ของฟังก์ชัน
+    [LO4] Defensive Programming: ตรวจสอบความยาวและประเภทตัวอักษร (.isalpha())
+          เพื่อป้องกัน Runtime Crash ก่อนนำไปคำนวณต่อ
+    """
+    # [LO2] ใช้ len() ตรวจสอบความยาว และ .isalpha() ตรวจสอบประเภทตัวอักษร
+    if len(user_input) != word_length or not user_input.isalpha():
+        return False, f"❌ Invalid entry! Please enter exactly {word_length} letters."
+
+    # Normalize case สำหรับการค้นหาใน Dictionary
+    if user_input.lower() not in FIVE_LETTER_WORDS:
+        return False, "❌ Invalid entry! Word is not in the word list."
+
+    return True, None
+```
 ## ✅ Test Cases (อัปเดตสำหรับ v1.0.0)
 
 | # | Feature | Input / Steps | Expected Result | Actual (ก่อนแก้) | Actual (หลังแก้) | Status |
