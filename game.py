@@ -4,9 +4,7 @@ A terminal-based word guessing game built with Python fundamentals.
 Demonstrates: LO1 (Data Structures), LO2 (Collections), LO3 (Control Flow),
 LO4 (Defensive Programming), and LO5 (Process Ownership).
 """
-import nltk
-nltk.download('words')
-from nltk.corpus import words
+import urllib.request
 import random
 
 # =====================================================================
@@ -16,8 +14,9 @@ import random
 GAME_CONFIG = (5, 6)  # (WORD_LENGTH, MAX_ATTEMPTS)
 DEFAULT_WORDS = ("APPLE", "CRANE", "TRAIN", "PLANT", "SMART", "FLASH", "BRAIN")
 
-WORD_LIST = words.words()
-FIVE_LETTER_WORDS = [w for w in WORD_LIST if len(w) == 5 and w.isalpha() and w.islower()]
+url = "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
+WORD_LIST = urllib.request.urlopen(url).read().decode().splitlines()
+FIVE_LETTER_WORDS = tuple([w for w in WORD_LIST if len(w) == 5])  # LO1: ใช้ Tuple เก็บคำ 5 ตัวอักษร (Immutable Collection)  
 
 # =====================================================================
 # LO4: DEFENSIVE PROGRAMMING & LO5: LOGGING / DOCUMENTATION
@@ -30,11 +29,13 @@ def validate_input(user_input, word_length):
     [LO4] Defensive Programming: ตรวจสอบความยาวและประเภทตัวอักษร (.isalpha())
           เพื่อป้องกัน Runtime Crash ก่อนนำไปคำนวณต่อ
     """
-    if not user_input in FIVE_LETTER_WORDS:
-        return False, "❌ Invalid entry! Please enter a valid 5-letter word."
     # LO2: ใช้ len() ตรวจสอบความยาวข้อมูล
     if len(user_input) != word_length or not user_input.isalpha():
         return False, f"❌ Invalid entry! Please enter exactly {word_length} letters."
+    # Normalize case for dictionary lookup because the word list is lowercase
+    if user_input.lower() not in FIVE_LETTER_WORDS:
+        return False, "❌ Invalid entry! Word is not in the word list."
+
     return True, None
 
 
